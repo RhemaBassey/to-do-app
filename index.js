@@ -1,4 +1,4 @@
-var n = 0
+var index = 0 //asigns index to list items
 document
   .getElementById("inputSection")
   .addEventListener("submit", function (event) {
@@ -6,14 +6,25 @@ document
     task = document.getElementById("task");
 
     const entry = document.getElementById("taskList");
-    entry.innerHTML += `<div><ul><li id="${n}"><input onclick="toggleCrossOut(${n})" type="checkbox">${task.value}</input></li></ul></div>`;
-    task.value = ''
+    if (task.value != ''){
+      entry.innerHTML += `<div><ul><li id="${index}"><input onclick="toggleCrossOut(${index})" type="checkbox">${task.value}</input></li></ul></div>`;
+    }
 
-    n++
-    console.log(n)
+    task.value = ''
+    index++
+
+    crossedItems = entry.querySelectorAll('.crossed-out');
+    // persist the checkboxes after submit button is pressed
+    crossedItems.forEach(function(item){
+      item.querySelector('input').checked = true
+    })
 
   });
+
+  // assigns crossed-out text-decoration to list if input box is pressed
   function toggleCrossOut(n) {
     select_task = document.getElementById(n)
     select_task.classList.toggle('crossed-out'); // Toggles the 'crossed-out' class
 }
+
+
