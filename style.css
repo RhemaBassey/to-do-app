@@ -6,3 +6,10 @@
 .crossed-out {
     text-decoration: line-through;
 }
+.form{
+    display:inline-block;
+}
+.hide{
+    display: none;
+}
+
