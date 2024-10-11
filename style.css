@@ -13,3 +13,18 @@
     display: none;
 }
 
+span{
+    padding-left: 10px;
+}
+li{
+    list-style-type: none;
+    /* display: inline-block; */
+    max-width: 200px;
+    /* background-color: green; */
+    overflow:hidden;
+    padding-right: 20px;
+}
+/* 
+li:hover{
+    color: red;
+} */
