@@ -2,14 +2,14 @@ var index = 0; //asigns index to list items
 const fullListID = "taskList";
 const entry = document.getElementById(fullListID);
 const deleteBtn = document.getElementById("deleteBtn");
-
+let prevEditIndex = null; // this is to track the index of the last list item in 'Edit Mode' so it can be closed
 //takes note of crossed out items
 function crossedItems() {
   return entry.querySelectorAll(".crossed-out");
 }
 
 function editIcon(index) {
-  return `<span class="hide"><i class="fas fa-edit" onclick="editMode(${index})"></i></span>`;
+  return `<span class="icon hide"><i class="fas fa-edit" onclick="editMode(${index})"></i></span>`;
 }
 
 document
@@ -18,12 +18,12 @@ document
     event.preventDefault(); // Prevents the default form submission
     task = document.getElementById("task");
 
-    if (task.value != "") {
+    // if (task.value != "") {
       entry.innerHTML += `<li id="${index}"><input 
-      onclick="toggleCrossOut(${index})" type="checkbox">${
+      onclick="toggleCrossOut(${index})" type="checkbox"><span class="content">${
         task.value
-      }${editIcon(index)}</li>`;
-    }
+      }${editIcon(index)}</span></li>`;
+    // }
     task.value = "";
     index++;
 
@@ -33,7 +33,7 @@ document
       // Add event listener for mouseover (hover)
       entryItem.addEventListener("mouseover", () => {
         try {
-          icon = entryItem.querySelector("span");
+          icon = entryItem.querySelector(".icon");
           icon.classList.remove("hide");
         } catch (error) {}
       });
@@ -41,7 +41,7 @@ document
       // Add event listener for mouseout (when mouse leaves)
       entryItem.addEventListener("mouseout", () => {
         try {
-          icon = entryItem.querySelector("span");
+          icon = entryItem.querySelector(".icon");
           icon.classList.add("hide");
         } catch (error) {}
       });
@@ -51,34 +51,54 @@ document
     crossedItems().forEach(function (item) {
       item.querySelector("input").checked = true;
     });
+
+    // THIS IS THE CODE TEMPLATE TO PERSIST THE EDIT MODE BUTTON FUNCTIONALITY
+    // try {
+    //   prevInnerButtons = getContent(prevEditIndex).querySelectorAll("button")
+    //   prevInnerButtons[0].onclick = console.log('OK button')
+    //   prevInnerButtons[1].onclick = console.log('CANCEL button')
+    // } catch (error) {console.log(error)}
+
   });
-
-function edit(index, listItemText) {
-  const listItem = document.getElementById(index);
-  checkBoxState = listItem.querySelector("input").checked
-
-  listItem.innerHTML = `<input 
-      onclick="toggleCrossOut(${index})" type="checkbox">${listItemText}${editIcon(
-    index
-  )}`;
-
-    // persist the checkboxes after submit button is pressed
-    listItem.querySelector("input").checked = checkBoxState
+function edit(index, stuff) {
+  getContent(index).innerHTML = `${stuff}${editIcon(index)}`;
 }
 
+function getContent(index) {
+  return document.getElementById(index).querySelector(".content");
+}
 
 function editMode(index) {
-  const listItem = document.getElementById(index);
-  checkBoxState = listItem.querySelector("input").checked
+  // Gets rid of other list item in 'edit mode'
+  try {
+    prevInnerText = getContent(prevEditIndex).querySelector('textarea').innerHTML
+    edit(prevEditIndex, prevInnerText)
+  } catch (error) {}
+  prevEditIndex = index;
 
+  const content = getContent(index);
+  uneditedText = content.innerText
+  const indexA = index + 100;
 
-  var editLayout = `<br><textarea>${listItem.innerText}
-      </textarea><button>Ok</button><button onclick="edit(${index},'${listItem.innerText}')">Cancel</button>`;
-  listItem.innerHTML = `<input 
-      onclick="toggleCrossOut(${index})" type="checkbox">${editLayout}</li>`;
+  content.innerHTML = `<br><textarea id="${indexA}">${content.innerText}</textarea>`;
 
-  // persist the checkboxes after submit button is pressed
-  listItem.querySelector("input").checked = checkBoxState
+  //Ok button
+  const okBtn = document.createElement("button");
+  okBtn.innerText = "Ok";
+  okBtn.onclick = function () {
+    console.log("clicked OK")
+    // edit(index, document.getElementById(indexA).value);
+  };
+  content.appendChild(okBtn);
+  //Cancel button
+  const cancelBtn = document.createElement("button");
+  cancelBtn.innerText = "Cancel";
+  cancelBtn.onclick = function () {
+    console.log("clicked CANCEL")
+    // edit(index, uneditedText);
+  };
+  content.appendChild(cancelBtn);
+
 }
 
 // assigns crossed-out text-decoration to list if input box is pressed
@@ -89,8 +109,10 @@ function toggleCrossOut(n) {
   // this toggles the hide class, only if you go from 0 to 1 or 1 to 0
   if (crossedItems().length > 0) {
     deleteBtn.classList.remove("hide");
+    deleteBtn.innerHTML = `Delete (${crossedItems().length}) <i class="fas fa-trash"></i>`
   } else {
     deleteBtn.classList.add("hide");
+
   }
 }
 

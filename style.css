@@ -24,6 +24,11 @@ li{
     overflow:hidden;
     padding-right: 20px;
 }
+
+.content button{
+    padding: 0 20px;
+    margin-right: 4px;
+}
 /* 
 li:hover{
     color: red;
