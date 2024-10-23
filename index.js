@@ -2,8 +2,9 @@ var index = 0; //asigns index to list items
 const fullListID = "taskList";
 const entry = document.getElementById(fullListID);
 const deleteBtn = document.getElementById("deleteBtn");
-let prevEditIndex = null; // this is to track the index of the last list item in 'Edit Mode' so it can be closed
-//takes note of crossed out items
+var previousEditIndex = '' //the index for the previous list item that was put in edit mode
+var submittedEditIndex = null//this will help prevent double submit overides to textareaPrevious
+var textareaPrevious = ''
 function crossedItems() {
   return entry.querySelectorAll(".crossed-out");
 }
@@ -15,8 +16,27 @@ function editIcon(index) {
 document
   .getElementById("inputSection")
   .addEventListener("submit", function (event) {
+
+  
     event.preventDefault(); // Prevents the default form submission
+
     task = document.getElementById("task");
+
+    // THIS IS THE CODE TO PERSIST THE EDIT MODE BUTTON FUNCTIONALITY
+    try{   
+
+      var textareaCurrent = document.querySelector("textarea").value
+      if(submittedEditIndex != previousEditIndex){
+        textareaPrevious = document.querySelector('textarea').innerHTML
+      }
+
+      submittedEditIndex = previousEditIndex
+      // prevents double submit overiding textareaPrevious
+      // if (textareaCurrent != textareaCurrent){
+      // }
+
+    }catch(error){
+    }
 
     // if (task.value != "") {
       entry.innerHTML += `<li id="${index}"><input 
@@ -24,6 +44,11 @@ document
         task.value
       }${editIcon(index)}</span></li>`;
     // }
+
+
+
+
+    
     task.value = "";
     index++;
 
@@ -50,14 +75,26 @@ document
     // persist the checkboxes after submit button is pressed
     crossedItems().forEach(function (item) {
       item.querySelector("input").checked = true;
-    });
+    }); 
 
-    // THIS IS THE CODE TEMPLATE TO PERSIST THE EDIT MODE BUTTON FUNCTIONALITY
-    // try {
-    //   prevInnerButtons = getContent(prevEditIndex).querySelectorAll("button")
-    //   prevInnerButtons[0].onclick = console.log('OK button')
-    //   prevInnerButtons[1].onclick = console.log('CANCEL button')
-    // } catch (error) {console.log(error)}
+// THIS IS THE CODE TO PERSIST THE EDIT MODE BUTTON FUNCTIONALITY
+try{
+
+  textArea = document.querySelector('textarea').innerHTML = textareaCurrent
+  buttons =  getContent(previousEditIndex).querySelectorAll('button')
+
+  buttons[0].onclick = function(){
+    edit(previousEditIndex, textareaCurrent)
+  }
+  buttons[1].onclick = function(){
+    edit(previousEditIndex, textareaPrevious)
+  }
+
+  // editMode(currentEditIndex)
+}catch(error){
+
+}
+ 
 
   });
 function edit(index, stuff) {
@@ -69,33 +106,41 @@ function getContent(index) {
 }
 
 function editMode(index) {
+
   // Gets rid of other list item in 'edit mode'
   try {
-    prevInnerText = getContent(prevEditIndex).querySelector('textarea').innerHTML
-    edit(prevEditIndex, prevInnerText)
+    const textArea = document.querySelector('textarea')
+    const previousInnerText = textArea.innerHTML
+
+    //prevents submit action while in edit mode, from changing the original value
+    if(submittedEditIndex == previousEditIndex){
+      edit(previousEditIndex, textareaPrevious)
+    }
+    else{
+          edit(previousEditIndex, previousInnerText)
+
+    }
   } catch (error) {}
-  prevEditIndex = index;
+  previousEditIndex = index
+
 
   const content = getContent(index);
   uneditedText = content.innerText
-  const indexA = index + 100;
 
-  content.innerHTML = `<br><textarea id="${indexA}">${content.innerText}</textarea>`;
+  content.innerHTML = `<br><textarea>${content.innerText}</textarea>`;
 
   //Ok button
   const okBtn = document.createElement("button");
   okBtn.innerText = "Ok";
   okBtn.onclick = function () {
-    console.log("clicked OK")
-    // edit(index, document.getElementById(indexA).value);
+    edit(index, document.querySelector("textarea").value);
   };
   content.appendChild(okBtn);
   //Cancel button
   const cancelBtn = document.createElement("button");
   cancelBtn.innerText = "Cancel";
   cancelBtn.onclick = function () {
-    console.log("clicked CANCEL")
-    // edit(index, uneditedText);
+    edit(index, uneditedText);
   };
   content.appendChild(cancelBtn);
 
