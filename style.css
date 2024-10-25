@@ -13,6 +13,16 @@
     display: none;
 }
 
+.icon{
+    opacity: 0.125;
+    padding-left: 15px;
+}
+
+.icon:hover{
+    opacity: 1;
+}
+
+
 span{
     padding-left: 10px;
 }
