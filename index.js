@@ -11,7 +11,7 @@ function crossedItems() {
 
 function sideIcons(index) {
   return `<span><i class="fas fa-edit icon" onclick="editMode(${index})"></i><i class="fas fa-trash icon" onclick="deleteItems(${index})"></i></span>`;
- }
+}
 
 document
   .getElementById("inputSection")
@@ -129,8 +129,10 @@ function editMode(index) {
 
 // assigns crossed-out text-decoration to list if input box is pressed
 function toggleCrossOut(n) {
-  var select_task = document.getElementById(n);
-  select_task.classList.toggle("crossed-out"); // Toggles the 'crossed-out' class
+  if (n != null) {
+    var select_task = document.getElementById(n);
+    select_task.classList.toggle("crossed-out"); // Toggles the 'crossed-out' class
+  }
 
   // this toggles the hide class, only if you go from 0 to 1 or 1 to 0
   if (crossedItems().length > 0) {
@@ -144,16 +146,14 @@ function toggleCrossOut(n) {
 }
 
 function deleteItems(index) {
-
-  if (index == null){
+  if (index == null) {
     crossedItems().forEach(function (item) {
       item.remove();
-      deleteBtn.classList.add("hide") });;
+      deleteBtn.classList.add("hide");
+    });
+  } else {
+    prompt("Delete this list item?")
+    document.getElementById(index).remove();
+    toggleCrossOut();
   }
-
-
-  else{
-    document.getElementById(index).remove()
- }
-  
 }
