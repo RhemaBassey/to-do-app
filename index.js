@@ -145,6 +145,60 @@ function toggleCrossOut(n) {
   }
 }
 
+function popUpWindow(index) {
+  const body = document.querySelector("body");
+
+  var popupHTML = `
+  <div id="popup" class="popup">
+        <div class="popup-content">
+          <span id="closePopup" class="close">&times;</span>
+          <h2>Delete Item?</h2>
+          <p>Delete '${getContent(index).innerText}'?</p>
+          <button id="cancelPopup">Cancel</button>
+          <button id="deletePopup">Delete</button>
+        </div>
+
+
+    </div>`;
+
+  const popupContainer = document.createElement("div")
+  popupContainer.innerHTML = popupHTML
+  body.appendChild(popupContainer)
+  const popup = document.getElementById("popup");
+  const closePopupBtn = document.getElementById("closePopup");
+  const cancelPopupBtn = document.getElementById("cancelPopup");
+  const deletePopupBtn = document.getElementById("deletePopup");
+  
+
+
+  // open the popup
+  popup.style.display = "flex";
+
+  // Function to close the popup
+  cancelPopupBtn.onclick = function(){closePopup()}
+  closePopupBtn.onclick = function(){closePopup()}
+  
+  function closePopup() {
+    popup.style.display = "none";
+    body.removeChild(popupContainer)
+  };
+
+  // Close popup if user clicks outside of it
+  window.onclick = function (event) {
+    if (event.target === popup) {
+      closePopup()
+      
+    }
+  };
+
+  // Delete item
+  deletePopupBtn.onclick = function(){
+    closePopup()
+    document.getElementById(index).remove();
+    toggleCrossOut();
+  }
+}
+
 function deleteItems(index) {
   if (index == null) {
     crossedItems().forEach(function (item) {
@@ -152,8 +206,7 @@ function deleteItems(index) {
       deleteBtn.classList.add("hide");
     });
   } else {
-    prompt("Delete this list item?")
-    document.getElementById(index).remove();
-    toggleCrossOut();
+    popUpWindow(index);
+
   }
 }
