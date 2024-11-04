@@ -72,12 +72,17 @@ document
     try {
       textArea = document.querySelector("textarea").innerHTML = textareaCurrent;
       buttons = getContent(previousEditIndex).querySelectorAll("button");
+      let cancelBtn = getContent(previousEditIndex).querySelector(".cancelBtn")
+      let okBtn = getContent(previousEditIndex).querySelector(".okBtn")
 
-      buttons[0].onclick = function () {
-        edit(previousEditIndex, textareaCurrent);
-      };
-      buttons[1].onclick = function () {
+      //cancel button
+      cancelBtn.onclick = function () {
         edit(previousEditIndex, textareaPrevious);
+      };
+
+      //ok button
+      okBtn.onclick = function () {
+        edit(previousEditIndex, textareaCurrent);
       };
 
       // editMode(currentEditIndex)
@@ -111,20 +116,24 @@ function editMode(index) {
 
   content.innerHTML = `<br><textarea>${content.innerText}</textarea>`;
 
+    //Cancel button
+    const cancelBtn = document.createElement("button");
+    cancelBtn.className = "cancelBtn"
+    cancelBtn.innerText = "Cancel";
+    cancelBtn.onclick = function () {
+      edit(index, uneditedText);
+    };
+    content.appendChild(cancelBtn);
+
   //Ok button
   const okBtn = document.createElement("button");
+  okBtn.className = "okBtn"
   okBtn.innerText = "Ok";
   okBtn.onclick = function () {
     edit(index, document.querySelector("textarea").value);
   };
   content.appendChild(okBtn);
-  //Cancel button
-  const cancelBtn = document.createElement("button");
-  cancelBtn.innerText = "Cancel";
-  cancelBtn.onclick = function () {
-    edit(index, uneditedText);
-  };
-  content.appendChild(cancelBtn);
+
 }
 
 // assigns crossed-out text-decoration to list if input box is pressed
