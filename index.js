@@ -37,7 +37,7 @@ document
     entry.innerHTML += `<li id="${index}"><input 
       onclick="toggleCrossOut(${index})" type="checkbox"><span class="content">${
       task.value
-    }${sideIcons(index)}</span></li>`;
+    }${sideIcons(index)}</span><hr></li>`;
     // }
 
     task.value = "";
@@ -114,7 +114,7 @@ function editMode(index) {
   const content = getContent(index);
   uneditedText = content.innerText;
 
-  content.innerHTML = `<br><textarea>${content.innerText}</textarea>`;
+  content.innerHTML = `<br><textarea rows="4" cols="50">${content.innerText}</textarea>`;
 
     //Cancel button
     const cancelBtn = document.createElement("button");
@@ -146,9 +146,9 @@ function toggleCrossOut(n) {
   // this toggles the hide class, only if you go from 0 to 1 or 1 to 0
   if (crossedItems().length > 0) {
     deleteBtn.classList.remove("hide");
-    deleteBtn.innerHTML = `Delete (${
+    deleteBtn.innerHTML = `<i class="fas fa-trash"></i> (${
       crossedItems().length
-    }) <i class="fas fa-trash"></i>`;
+    })`;
   } else {
     deleteBtn.classList.add("hide");
   }
@@ -211,7 +211,10 @@ function popUpWindow(index) {
 function deleteItems(index) {
   if (index == null) {
     crossedItems().forEach(function (item) {
-      item.remove();
+      setTimeout(() => {
+        item.remove();
+      }, 1000);
+      item.classList.add("fade");
       deleteBtn.classList.add("hide");
     });
   } else {

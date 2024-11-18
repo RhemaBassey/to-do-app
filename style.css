@@ -1,18 +1,17 @@
-
-
-#cancelPopup, .cancelBtn{
+#cancelPopup,
+.cancelBtn {
   background-color: #1e90ff;
 }
-#cancelPopup:hover, .cancelBtn:hover {
+#cancelPopup:hover,
+.cancelBtn:hover {
   background-color: #1a7bd9; /* Darker red on hover */
 }
 
-#cancelPopup:active, .cancelBtn:active{
+#cancelPopup:active,
+.cancelBtn:active {
   background-color: #1664b2; /* Even darker red on click */
   transform: scale(0.98); /* Slightly shrink on click */
 }
-
-
 
 #deletePopup {
   background-color: #e63946; /* Red background */
@@ -27,25 +26,64 @@
   transform: scale(0.98); /* Slightly shrink on click */
 }
 
+.card{
+  background-color: #ffffff;      /* White card background */
+  border-radius: 10px;            /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8); /* Soft shadow */
+  overflow:hidden;               /* Rounded corners for images */
+  height: 500px;
+   width: 400px;                   /* Fixed width for cards */
+  display: flex;
+  flex-direction: column;         /* Stack content vertically */
+  transition: transform 0.3s;     /* Smooth hover effect */
+  box-sizing: border-box;
+}
 
+.scroll-wrapper {
+  height: 100%;                      /* Allows the inner content to scroll */
+  overflow-y: auto;                  /* Apply scrolling only to this wrapper */
+}
+
+.content:hover {
+  color: #4caf50;
+}
 
 .crossed-out {
   text-decoration: line-through;
+  color: blue;
 }
+.crossed-out:hover {
+  color: blue;
+}
+
 .form {
   display: inline-block;
+}
+.fade{
+  opacity: 0;
 }
 .hide {
   display: none;
 }
 
+.heading {
+  color: #333;
+  display: inline;
+}
+
+.heading:hover {
+  color: #4caf50;
+}
+
 .icon {
   opacity: 0.125;
   padding-left: 15px;
+  color: black;
 }
 
 .icon:hover {
   opacity: 1;
+  color: #4caf50;
 }
 
 /* Popup styling */
@@ -73,6 +111,23 @@
   border-radius: 8px;
 }
 
+.underline-input {
+  border: none;                  /* Remove default border */
+  border-bottom: 2px solid #000; /* Add bottom border to make it a line */
+  outline: none;                 /* Remove outline when focused */
+  background-color: transparent; /* Transparent background */
+  margin-top: 20px;                /* Adjust padding for spacing */
+  margin-left: 40px;
+  margin-bottom: 30px;
+  font-size: 16px;               /* Optional: adjust font size */
+}
+
+/* Change line color on focus */
+.underline-input:focus {
+  border-bottom-color: #007bff;  /* Change the color to your desired focus color */
+}
+
+
 /* Close button styling */
 .close {
   position: absolute;
@@ -84,37 +139,47 @@
   padding-right: 10px;
 }
 
-html, body {
-    height: 100%;                  /* Ensures html and body fill the viewport */
-    margin: 0;                     /* Removes default margin */
-    padding: 0;                    /* Removes default padding */
-  }
-
-body{
-    background-image: url('images/bg.png'); /* Replace with your image path */
-    background-size: cover;          /* Scales the image to cover the entire background */
-    background-position: center;     /* Centers the image */
-    background-repeat: no-repeat;    /* Prevents the image from repeating */
-    /* display: flex;
-flex-direction: column;
-align-items: center; */
+html,
+body {
+  height: 100%; /* Ensures html and body fill the viewport */
+  margin: 0; /* Removes default margin */
+  padding: 0; /* Removes default padding */
 }
+
+body {
+  background-image: url("images/bg.png"); /* Replace with your image path */
+  background-size: cover; /* Scales the image to cover the entire background */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center; 
+}
+
+* {
+  font-family: "Shadows Into Light Two", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
 span {
   padding-left: 10px;
 }
 li {
   list-style-type: none;
   /* display: inline-block; */
-  max-width: 200px;
+  max-width: 280px;
   /* background-color: green; */
   overflow: hidden;
-  padding-right: 20px;
+  padding-right: 20px;                
+  transition: opacity 0.5s ease-in-out; /* Transition applied to opacity */
 }
 
 .content button {
   padding: 5px 20px;
   margin: 4px 6px 10px;
-
 }
 
 button {
@@ -138,6 +203,11 @@ button:hover {
 button:active {
   background-color: #3e8e41; /* Even darker on click */
   transform: scale(0.98);
+}
+
+hr{
+  border: 1px solid black; 
+  margin: 4px -100%;
 }
 
 /* 
